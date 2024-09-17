@@ -1,3 +1,7 @@
 {
-  "MatchService.fetchError": "Unable to fetch matches"
+  "MatchService.fetchError": "Unable to fetch matches",
+  "Matches.homeTeam": "Home Team",
+  "Matches.awayTeam": "Away Team",
+  "Matches.score": "Score",
+  "Matches.currentMatches": "Current Football Matches"
 }

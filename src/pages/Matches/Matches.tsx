@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Spin, Typography } from 'antd'
+import {
+  Table, Spin, Typography,
+} from 'antd'
 import { observer } from 'mobx-react-lite'
+import { t } from 'i18next'
 
 import { MatchService, MatchStore } from 'entities/match'
+
+import * as Style from './Matches.styles'
 
 const { Title } = Typography
 
@@ -14,50 +19,57 @@ export const Matches: React.FC = observer(() => {
       setLoading(true)
 
       matchService.getLiveMatches()
-        .finally(() => setLoading(false)) // TODO: catch (and throw error in service)
+        .finally(() => setLoading(false))
     }
 
     getMatches()
 
-    const intervalId = setInterval(getMatches, 30000)
+    // TODO: return
+    // const intervalId = setInterval(getMatches, 2000) // TODO: change interval to 30000
 
-    return () => clearInterval(intervalId)
+    // return () => clearInterval(intervalId)
   }, [])
 
   const columns = [
     {
-      title: 'Home Team', // TODO: i18n
+      title: t('Matches.homeTeam'),
       dataIndex: 'home',
       key: 'home',
       render: (home: { name: string }) => home.name,
     },
     {
-      title: 'Away Team',
+      title: t('Matches.awayTeam'),
       dataIndex: 'away',
       key: 'away',
       render: (away: { name: string }) => away.name,
     },
     {
-      title: 'Score',
+      title: t('Matches.score'),
       dataIndex: 'score',
       key: 'score',
     },
   ]
 
   return (
-    <div>
-      <Title level={2}>Current Football Matches</Title>
-      {isLoading ? (
-        <Spin size="large" />
-      ) : (
-        <Table
+    <Style.Container>
+      <Style.TableWrapper title={(
+        <Title level={2}>
+          {t('Matches.currentMatches')}
+          {' '}
+          {isLoading ? <Spin size="large" /> : '⚽️'}
+        </Title>
+      )}
+      >
+        <Table // TODO: make it heigh even when loading
           columns={columns}
           dataSource={matchStore.matches}
+          loading={isLoading && !!matchStore.matches}
           pagination={false}
           rowKey="id"
+          scroll={{ y: '70vh' }}
         />
-      )}
-    </div>
+      </Style.TableWrapper>
+    </Style.Container>
   )
 })
 

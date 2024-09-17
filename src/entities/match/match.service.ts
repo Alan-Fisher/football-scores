@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import { t } from 'i18next'
 
-import { fetchLiveMatches } from 'entities/match/match.api' // TODO: beautify export
+import { fetchLiveMatches } from 'entities/match'
 
 import { transformMatchesFromExternal } from './match.helpers'
 
@@ -11,6 +11,8 @@ export class MatchService {
   constructor(private store: MatchStore) { }
 
   getLiveMatches = async (): Promise<void> => fetchLiveMatches()
-    .then(({ match }) => { this.store.setMatches(transformMatchesFromExternal(match)) })
-    .catch((e) => { message.error(t('MatchService.fetchError')) })
+    .then(({ match }) => { this.store.setMatches(transformMatchesFromExternal(match)) }) // TODO: add sort?
+    .catch(() => { message.error(t('MatchService.fetchError')) })
 }
+
+// TODO: add tests

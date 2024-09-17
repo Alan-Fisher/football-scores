@@ -8,4 +8,4 @@ const apiClient = axios.create({
   params: { key: REACT_APP_API_KEY, secret: REACT_APP_API_SECRET },
 })
 
-export const get = async (url: string, params = {}) => apiClient.get(url, { params }) // TODO: need async?
+export const get = (url: string, params = {}) => apiClient.get(url, { params })
