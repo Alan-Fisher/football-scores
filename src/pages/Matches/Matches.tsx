@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {
   Table, Spin, Typography,
+  TableColumnType,
 } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { t } from 'i18next'
@@ -24,46 +25,26 @@ export const Matches: React.FC = observer(() => {
 
     getMatches()
 
-    // TODO: return
-    // const intervalId = setInterval(getMatches, 2000) // TODO: change interval to 30000
+    const intervalId = setInterval(getMatches, 30000)
 
-    // return () => clearInterval(intervalId)
+    return () => clearInterval(intervalId)
   }, [])
-
-  const columns = [
-    {
-      title: t('Matches.homeTeam'),
-      dataIndex: 'home',
-      key: 'home',
-      render: (home: { name: string }) => home.name,
-    },
-    {
-      title: t('Matches.awayTeam'),
-      dataIndex: 'away',
-      key: 'away',
-      render: (away: { name: string }) => away.name,
-    },
-    {
-      title: t('Matches.score'),
-      dataIndex: 'score',
-      key: 'score',
-    },
-  ]
 
   return (
     <Style.Container>
-      <Style.TableWrapper title={(
-        <Title level={2}>
-          {t('Matches.currentMatches')}
-          {' '}
-          {isLoading ? <Spin size="large" /> : '⚽️'}
-        </Title>
-      )}
+      <Style.TableWrapper
+        title={(
+          <Title level={2}>
+            {t('Matches.currentMatches')}
+            {' '}
+            {isLoading ? <Spin size="large" /> : '⚽️'}
+          </Title>
+        )}
       >
-        <Table // TODO: make it heigh even when loading
+        <Table
           columns={columns}
           dataSource={matchStore.matches}
-          loading={isLoading && !!matchStore.matches}
+          loading={isLoading && !!matchStore.matches.length}
           pagination={false}
           rowKey="id"
           scroll={{ y: '70vh' }}
@@ -75,3 +56,23 @@ export const Matches: React.FC = observer(() => {
 
 const matchStore = new MatchStore()
 const matchService = new MatchService(matchStore)
+
+const columns: TableColumnType[] = [
+  {
+    title: t('Matches.homeTeam'),
+    dataIndex: 'home',
+    key: 'home',
+    render: (home: { name: string }) => home.name,
+  },
+  {
+    title: t('Matches.awayTeam'),
+    dataIndex: 'away',
+    key: 'away',
+    render: (away: { name: string }) => away.name,
+  },
+  {
+    title: t('Matches.score'),
+    dataIndex: 'score',
+    key: 'score',
+  },
+]

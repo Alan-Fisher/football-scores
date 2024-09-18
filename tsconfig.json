@@ -23,11 +23,12 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./src",
     "types": [
-      "node"
+      "node",
+      "jest"
     ],
-    "downlevelIteration": true
+    "downlevelIteration": true,
   },
   "include": [
-    "src"
+    "src",
   ]
 }

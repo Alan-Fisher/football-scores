@@ -11,8 +11,6 @@ export class MatchService {
   constructor(private store: MatchStore) { }
 
   getLiveMatches = async (): Promise<void> => fetchLiveMatches()
-    .then(({ match }) => { this.store.setMatches(transformMatchesFromExternal(match)) }) // TODO: add sort?
+    .then(({ match }) => { this.store.setMatches(transformMatchesFromExternal(match)) })
     .catch(() => { message.error(t('MatchService.fetchError')) })
 }
-
-// TODO: add tests
