@@ -1,9 +1,9 @@
 ## Getting Started
 
-yarn install
-cp .env.example .env
-yarn test
-yarn start
+- `yarn install`
+- `cp .env.example .env`
+- `yarn test`
+- `yarn start`
 
 ## Task Description
 
