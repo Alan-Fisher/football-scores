@@ -10,7 +10,7 @@ import { MatchStore } from '.'
 export class MatchService {
   constructor(private store: MatchStore) { }
 
-  getLiveMatches = async (): Promise<void> => fetchLiveMatches()
+  getLiveMatches = (): Promise<void> => fetchLiveMatches()
     .then(({ match }) => { this.store.setMatches(transformMatchesFromExternal(match)) })
     .catch(() => { message.error(t('MatchService.fetchError')) })
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Table, Spin, Typography,
-  TableColumnType,
+  Table, Spin, Typography, TableColumnType, Empty,
 } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { t } from 'i18next'
@@ -11,6 +10,7 @@ import { MatchService, MatchStore } from 'entities/match'
 import * as Style from './Matches.styles'
 
 const { Title } = Typography
+const { PRESENTED_IMAGE_SIMPLE } = Empty
 
 export const Matches: React.FC = observer(() => {
   const [isLoading, setLoading] = useState<boolean>(false)
@@ -18,7 +18,6 @@ export const Matches: React.FC = observer(() => {
   useEffect(() => {
     const getMatches = () => {
       setLoading(true)
-
       matchService.getLiveMatches()
         .finally(() => setLoading(false))
     }
@@ -30,21 +29,24 @@ export const Matches: React.FC = observer(() => {
     return () => clearInterval(intervalId)
   }, [])
 
+  const tableTitle = (
+    <Title level={2}>
+      {t('Matches.currentMatches')}
+      {' '}
+      {isLoading ? <Spin size="large" /> : '⚽️'}
+    </Title>
+  )
+
+  const emptySign = <Empty description={t('Matches.noMatches')} image={PRESENTED_IMAGE_SIMPLE} />
+
   return (
     <Style.Container>
-      <Style.TableWrapper
-        title={(
-          <Title level={2}>
-            {t('Matches.currentMatches')}
-            {' '}
-            {isLoading ? <Spin size="large" /> : '⚽️'}
-          </Title>
-        )}
-      >
+      <Style.TableWrapper title={tableTitle}>
         <Table
           columns={columns}
           dataSource={matchStore.matches}
           loading={isLoading && !!matchStore.matches.length}
+          locale={{ emptyText: emptySign }}
           pagination={false}
           rowKey="id"
           scroll={{ y: '70vh' }}
